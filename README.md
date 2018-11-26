@@ -37,3 +37,5 @@ File: MaBEstEngine.cc, Line 103
 Expression: node_idx != INVALID_NODE_INDEX
 ```
 
+If this model runs successfully, it should generate three .csv files and a .txt file:<br>
+Four_cycle_FEscape_fp.csv, Four_cycle_FEscape_probtraj.csv, Four_cycle_FEscape_statdist.csv, Four_cycle_FEscape_run.txt
