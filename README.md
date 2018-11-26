@@ -40,3 +40,15 @@ Note that the above indicates there's still a problem running on MinGW.
 
 However, when this model runs successfully, it should generate three .csv files and a .txt file:<br>
 Four_cycle_FEscape_fp.csv, Four_cycle_FEscape_probtraj.csv, Four_cycle_FEscape_statdist.csv, Four_cycle_FEscape_run.txt
+
+Note different uses of the PhysicalRandomGenerator:
+```
+~/dev/MaBoSS_original/MaBoSS-env-2.0/examples$ grep use_phys *.cfg
+cellcycle_runcfg.cfg:use_physrandgen = TRUE;
+p53_Mdm2_runcfg.cfg:use_physrandgen = FALSE;
+ 
+~/dev/MaBoSS_original/MaBoSS-env-2.0/examples$ grep use_phys */*.cfg | grep true
+Cell_cycle/cellcycle_runcfg.cfg:use_physrandgen = TRUE;
+Exact_matlab_test_ex2/example2_matlab_config.cfg:use_physrandgen = TRUE;
+ToyModel/Four_cycle_FEscape.cfg:use_physrandgen = TRUE;
+```
