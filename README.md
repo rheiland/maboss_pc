@@ -6,6 +6,7 @@ Briefly, some of the changes that have been made to accommodate building on MinG
 
 * allow only "StandardRandomGenerator" (a PRNG), not "PhysicalRandomGenerator"; warn/halt if the latter
 * replace <sys/time.h> and <sys/times.h> in Probe.h (and related files...)
+* in engine\src\maboss-config.h, comment out #define HAS_RAND48
 
 Try building the code using (we will show code for Windows; make appropriate changes for *nix):
 ```
