@@ -52,3 +52,7 @@ Cell_cycle/cellcycle_runcfg.cfg:use_physrandgen = TRUE;
 Exact_matlab_test_ex2/example2_matlab_config.cfg:use_physrandgen = TRUE;
 ToyModel/Four_cycle_FEscape.cfg:use_physrandgen = TRUE;
 ```
+
+Q: How do we visualize the output? Rf. 
+* https://maboss.curie.fr/pub/Description_TrajectoryFig.pdf
+* https://maboss.curie.fr/pub/README_TrajectoryFig.txt
