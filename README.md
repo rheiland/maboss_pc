@@ -1,6 +1,6 @@
 # maboss_pc
 
-This repo is an edited version of https://maboss.curie.fr/pub/MaBoSS-env-2.0.tgz . The goal is to provide a single code base that will compile and run on Linux, OSX, and Windows/MinGW-w64(with POSIX threading). This is in preparation for incorporating MaBoSS into PhysiCell (hence the "_pc"). Instructions for setting up a proper MinGW-w64 can be found at http://www.mathcancer.org/blog/setting-up-a-64-bit-gcc-environment-on-windows/. HOWEVER, instead of selecting "win32" as your Threads model, you should choose "posix". And if you are building on OSX, you will eventually (for PhysiCell) need to install the OpenMP-enabled gcc using brew (rf. the PhysiCell Quickstart guide).
+This repo is an edited version of https://maboss.curie.fr/pub/MaBoSS-env-2.0.tgz . The goal is to provide a single code base that will compile and run on Linux, OSX, and Windows/MinGW-w64(with POSIX threading). This is in preparation for incorporating MaBoSS into PhysiCell (hence the "_pc"). Instructions for setting up a proper MinGW-w64 can be found at http://www.mathcancer.org/blog/setting-up-a-64-bit-gcc-environment-on-windows/. HOWEVER, instead of selecting "win32" as your Threads model, you should choose "posix". And if you are building on OSX, you will eventually (for PhysiCell) need to install the OpenMP-enabled gcc using brew (rf. the PhysiCell [Quickstart](https://github.com/MathCancer/PhysiCell/blob/master/Quickstart.pdf) guide).
 
 Briefly, some of the changes that have been made to accommodate building on MinGW are:
 
