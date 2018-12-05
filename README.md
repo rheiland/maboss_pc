@@ -38,16 +38,25 @@ Expression: node_idx != INVALID_NODE_INDEX
 ```
 Note that the above indicates there's still a problem running on MinGW.
 
-However, when this model runs successfully, it should generate three .csv files and a .txt file:<br>
-Four_cycle_FEscape_fp.csv, Four_cycle_FEscape_probtraj.csv, Four_cycle_FEscape_statdist.csv, Four_cycle_FEscape_run.txt
+However, this same code runs fine on OSX and Linux. And when it does run successfully, it will generate three .csv files and a .txt file:
+```
+.../examples/ToyModel$ ../../engine/src/MaBoSS -c Four_cycle_FEscape.cfg -o Four_cycle_FEscape Four_cycle.bnd
+.../examples/ToyModel$ ls -l
+...
+-rw-r--r--  1 heiland  staff      71 Dec  5 09:53 Four_cycle_FEscape_fp.csv
+-rw-r--r--@ 1 heiland  staff  446248 Dec  5 09:53 Four_cycle_FEscape_probtraj.csv
+-rw-r--r--  1 heiland  staff    1630 Dec  5 09:53 Four_cycle_FEscape_run.txt
+-rw-r--r--  1 heiland  staff   16328 Dec  5 09:53 Four_cycle_FEscape_statdist.csv
+...
+```
 
 Note different uses of the PhysicalRandomGenerator:
 ```
-~/dev/MaBoSS_original/MaBoSS-env-2.0/examples$ grep use_phys *.cfg
+.../examples$ grep use_phys *.cfg
 cellcycle_runcfg.cfg:use_physrandgen = TRUE;
 p53_Mdm2_runcfg.cfg:use_physrandgen = FALSE;
  
-~/dev/MaBoSS_original/MaBoSS-env-2.0/examples$ grep use_phys */*.cfg | grep true
+.../examples$ grep use_phys */*.cfg | grep true
 Cell_cycle/cellcycle_runcfg.cfg:use_physrandgen = TRUE;
 Exact_matlab_test_ex2/example2_matlab_config.cfg:use_physrandgen = TRUE;
 ToyModel/Four_cycle_FEscape.cfg:use_physrandgen = TRUE;
