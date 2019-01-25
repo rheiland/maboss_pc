@@ -36,7 +36,10 @@ def remove_dataframe_columns (panda_dataframe):
     dataframe = panda_dataframe
     dataframe = dataframe.drop("Time", 1)
     dataframe = dataframe.drop("TH", 1)
-    dataframe = dataframe.drop("ErrTH", 1)
+    try:
+        dataframe = dataframe.drop("ErrTH", 1)
+    except:
+        print("No ErrTH present.")
     dataframe = dataframe.drop("H", 1)
     
     for item in dataframe:
@@ -92,7 +95,10 @@ probability_dataframe = remove_dataframe_columns(probability_dataframe)
 plotting_array = np.zeros((np.asarray(probability_dataframe.shape)[1], np.asarray(probability_dataframe.shape)[0]))
 
 for column_index in np.arange((probability_dataframe.shape)[1]):
-    plotting_array[column_index, :] = np.asarray(probability_dataframe.iloc[:, column_index])
+    try:
+        plotting_array[column_index, :] = np.asarray(probability_dataframe.iloc[:, column_index])
+    except ValueError as err:
+        print("ValueError: {0}".format(err))
 
 label_list = new_labels(probability_dataframe.columns.values)
 
@@ -113,6 +119,6 @@ writer.save()
 ax.set_xlabel("Time(s)")
 ax.set_ylabel("Probability")
 my_legends = ax.legend(loc='center right', fontsize=8)
-fig.tight_layout()
+#fig.tight_layout()
 ax.set_title("{}".format(file_name))
 plt.savefig("{}_traj.pdf".format(file_name), dpi=300, bbox_extra_artiste=(my_legends,), bbox_inches='tight')
