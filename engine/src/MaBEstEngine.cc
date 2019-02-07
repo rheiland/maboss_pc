@@ -89,11 +89,17 @@ MaBEstEngine::MaBEstEngine(Network* network, RunConfig* runconfig) :
 NodeIndex MaBEstEngine::getTargetNode(RandomGenerator* random_generator, const MAP<NodeIndex, double>& nodeTransitionRates, double total_rate) const
 {
   double U_rand2 = random_generator->generate();
+  if (U_rand2 < 1.0e-5) {
+    std::cout << "U_rand2 = " << U_rand2 << "\n";
+  }
   double random_rate = U_rand2 * total_rate;
   MAP<NodeIndex, double>::const_iterator begin = nodeTransitionRates.begin();
   MAP<NodeIndex, double>::const_iterator end = nodeTransitionRates.end();
   NodeIndex node_idx = INVALID_NODE_INDEX;
-  while (begin != end && random_rate > 0.) {
+  // if (random_rate < 1.0e-5) {  // debugging
+  //   std::cout << "random_rate = " << random_rate << "\n";
+  // }
+  while (begin != end && random_rate >= 0.) {   // need to have ">= 0" for Windows/MinGW PRNG
     node_idx = (*begin).first;
     double rate = (*begin).second;
     random_rate -= rate;
@@ -194,42 +200,42 @@ void MaBEstEngine::runThread(Cumulator* cumulator, unsigned int start_count_thre
       begin = nodes.begin();
 
       while (begin != end) {
-	Node* node = *begin;
-	NodeIndex node_idx = node->getIndex();
-	if (node->getNodeState(network_state)) {
-	  double r_down = node->getRateDown(network_state);
-	  if (r_down != 0.0) {
-	    total_rate += r_down;
-	    nodeTransitionRates[node_idx] = r_down;
-	  }
-	} else {
-	  double r_up = node->getRateUp(network_state);
-	  if (r_up != 0.0) {
-	    total_rate += r_up;
-	    nodeTransitionRates[node_idx] = r_up;
-	  }
-	}
-	++begin;
+      	Node* node = *begin;
+      	NodeIndex node_idx = node->getIndex();
+      	if (node->getNodeState(network_state)) {
+	        double r_down = node->getRateDown(network_state);
+	        if (r_down != 0.0) {
+	          total_rate += r_down;
+	          nodeTransitionRates[node_idx] = r_down;
+	        }
+	      } else {
+	        double r_up = node->getRateUp(network_state);
+	        if (r_up != 0.0) {
+	          total_rate += r_up;
+	          nodeTransitionRates[node_idx] = r_up;
+	        }
+	      }
+	      ++begin;
       }
       if (total_rate == 0.0) {
-	// may have several fixpoint maps
-	if (fixpoint_map->find(network_state.getState()) == fixpoint_map->end()) {
-	  (*fixpoint_map)[network_state.getState()] = 1;
-	} else {
-	  (*fixpoint_map)[network_state.getState()]++;
-	}
-	cumulator->cumul(network_state, max_time, 0.);
-	tm = max_time;
-	stable_cnt++;
-	break;
+      	// may have several fixpoint maps
+	      if (fixpoint_map->find(network_state.getState()) == fixpoint_map->end()) {
+	        (*fixpoint_map)[network_state.getState()] = 1;
+	      } else {
+	        (*fixpoint_map)[network_state.getState()]++;
+	      }
+      	cumulator->cumul(network_state, max_time, 0.);
+	      tm = max_time;
+	      stable_cnt++;
+	      break;
       }
 
       double transition_time ;
       if (discrete_time) {
-	transition_time = time_tick;
+	      transition_time = time_tick;
       } else {
-	double U_rand1 = random_generator->generate();
-	transition_time = -log(U_rand1) / total_rate;
+	      double U_rand1 = random_generator->generate();
+      	transition_time = -log(U_rand1) / total_rate;
       }
 
       tm += transition_time;
@@ -238,15 +244,15 @@ void MaBEstEngine::runThread(Cumulator* cumulator, unsigned int start_count_thre
       double TH = computeTH(nodeTransitionRates, total_rate);
 
       if (NULL != output_traj) {
-	(*output_traj) << std::setprecision(10) << tm << '\t';
-	network_state.displayOneLine(*output_traj, network);
-	(*output_traj) << '\t' << TH << '\n';
+	      (*output_traj) << std::setprecision(10) << tm << '\t';
+      	network_state.displayOneLine(*output_traj, network);
+	      (*output_traj) << '\t' << TH << '\n';
       }
 
       cumulator->cumul(network_state, tm, TH);
 
       if (tm >= max_time) {
-	break;
+	      break;
       }
 
       network_state.flipState(network->getNode(node_idx));
@@ -302,9 +308,9 @@ STATE_MAP<NetworkState_Impl, unsigned int>* MaBEstEngine::mergeFixpointMaps()
     while (b != e) {
       NetworkState_Impl state = (*b).first;
       if (fixpoint_map->find(state) == fixpoint_map->end()) {
-	(*fixpoint_map)[state] = (*b).second;
+	      (*fixpoint_map)[state] = (*b).second;
       } else {
-	(*fixpoint_map)[state] += (*b).second;
+	      (*fixpoint_map)[state] += (*b).second;
       }
       ++b;
     }
@@ -384,4 +390,3 @@ MaBEstEngine::~MaBEstEngine()
   delete merged_cumulator;
   delete [] tid;
 }
-
